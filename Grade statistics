@@ -1,0 +1,80 @@
+# Write your solution here
+
+
+def exercise(first, second):
+    """caculate exercise points plus exam points"""
+    multiple = 10
+    second = second // multiple
+    total = first + second
+    return total
+
+
+def points_average(total_list):
+    """points avg from total points"""
+    avg_points = sum(total_list) / len(total_list)
+    return avg_points
+
+
+def count_pass(grade_list):
+    pass_grade = sum(grade_list[grade] for grade in grade_list if grade > 0)
+    total_subject = sum(grade_list.values())
+    pass_percentage = (pass_grade / total_subject) * 100
+    return pass_percentage
+
+
+def grade(pass_total):
+    grade_distribution = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0, 0: 0}
+    for i in pass_total:
+        if 0 <= i <= 14:
+            grade_distribution[0] += 1
+        elif 15 <= i <= 17:
+            grade_distribution[1] += 1
+        elif 18 <= i <= 20:
+            grade_distribution[2] += 1
+        elif 21 <= i <= 23:
+            grade_distribution[3] += 1
+        elif 24 <= i <= 27:
+            grade_distribution[4] += 1
+        elif 28 <= i <= 30:
+            grade_distribution[5] += 1
+    return grade_distribution
+
+
+def main():
+    total_list = []
+    pass_list = []
+    pass_total_list = []
+
+    while True:
+        user_input = input(
+            "Exam points and exercises completed:")
+        if user_input:
+            first, second = map(int, user_input.split())
+            # print(first, second)
+            pass_point = first
+            if first < 10:
+                pass_point = 0
+
+            total = exercise(first, second)
+            pass_total = exercise(pass_point, second)
+
+            pass_list.append(pass_point)
+            total_list.append(total)
+            pass_total_list.append(pass_total)
+            # print(pass_list, total_list)
+
+        else:
+            print("Statistics:")
+            avg_points = points_average(total_list)
+            grad_distribution = grade(pass_total_list)
+            pass_per = count_pass(grad_distribution)
+            print(f"Points average: {avg_points:.1f}")
+            print(f"Pass percentage: {pass_per:.1f}")
+            print("Grade distribution:")
+            for level, count in grad_distribution.items():
+                print(f"  {level}: {'*'*count}")
+
+            break
+
+
+main()
