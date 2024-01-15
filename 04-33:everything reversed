@@ -1,0 +1,14 @@
+# Write your solution here
+def everything_reversed(n):
+    new_list = []
+    for i in range(len(n)-1, -1, -1):
+        item = n[i]
+        item = item[::-1]
+        new_list.append(item)
+    return new_list
+
+
+if __name__ == "__main__":
+    my_list = ["Hi", "there", "example", "one more"]
+    new_list = everything_reversed(my_list)
+    print(new_list)
