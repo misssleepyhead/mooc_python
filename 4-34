@@ -1,0 +1,14 @@
+def most_common_character(words):
+    count_char = {}
+    max_count = 0
+    max_char = ""
+    for i in words:
+        if i in count_char:
+            count_char[i] += 1
+        else:
+            count_char[i] = 1
+
+        if count_char[i] > max_count:
+            max_char = i
+            max_count = count_char[i]
+    return max_char
