@@ -1,0 +1,63 @@
+# Write your solution here
+def sudoku_grid_correct(sudoku: list):
+    numbers1 = []
+    numbers2 = []
+    numbers3 = []
+    for row_no in sudoku:
+        for number in row_no:
+            if number > 0 and number in numbers1:
+                return False
+            numbers1.append(number)
+            # print(numbers1)
+        numbers1.clear()
+    # print("1ok")
+    for column in range(0, 9):
+        for row_no in sudoku:
+            if row_no[column] != 0 and row_no[column] in numbers2:
+                return False
+            numbers2.append(row_no[column])
+            # print(numbers2)
+        numbers2.clear()
+    # print("2 ok ")
+    for row_no in range(0, 9, 3):
+        for column_no in range(0, 9, 3):
+            for i in range(row_no, row_no+3):
+                for j in range(column_no, column_no+3):
+                    value = sudoku[i][j]
+                # print(value)
+                    if value != 0 and value in numbers3:
+                        return False
+                    numbers3.append(value)
+                # print(numbers3)
+            numbers3.clear()
+    return True
+
+
+if __name__ == "__main__":
+    sudoku1 = [
+        [9, 0, 0, 0, 8, 0, 3, 0, 0],
+        [2, 0, 0, 2, 5, 0, 7, 0, 0],
+        [0, 2, 0, 3, 0, 0, 0, 0, 4],
+        [2, 9, 4, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 7, 3, 0, 5, 6, 0],
+        [7, 0, 5, 0, 6, 0, 4, 0, 0],
+        [0, 0, 7, 8, 0, 3, 9, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0, 3],
+        [3, 0, 0, 0, 0, 0, 0, 0, 2]
+    ]
+
+    print(sudoku_grid_correct(sudoku1))
+
+    sudoku2 = [
+        [2, 6, 7, 8, 3, 9, 5, 0, 4],
+        [9, 0, 3, 5, 1, 0, 6, 0, 0],
+        [0, 5, 1, 6, 0, 0, 8, 3, 9],
+        [5, 1, 9, 0, 4, 6, 3, 2, 8],
+        [8, 0, 2, 1, 0, 5, 7, 0, 6],
+        [6, 7, 4, 3, 2, 0, 0, 0, 5],
+        [0, 0, 0, 4, 5, 7, 2, 6, 3],
+        [3, 2, 0, 0, 8, 0, 0, 5, 7],
+        [7, 4, 5, 0, 0, 3, 9, 0, 1]
+    ]
+
+    print(sudoku_grid_correct(sudoku2))
