@@ -1,0 +1,29 @@
+
+def who_won(game_board: list):
+    # Create a dict to records all the scores
+    players = {1: 0, 2: 0, 0: 0}
+    for row in game_board:
+        for j in row:
+            if j == 1:
+                players[1] += 1
+            elif j == 2:
+                players[2] += 1
+            elif j == 0:
+                players[0] += 1
+
+    if players[1] > players[2]:
+        return 1
+    elif players[2] > players[1]:
+        return 2
+    else:
+        return 0
+
+
+if __name__ == "__main__":
+    # game = [
+    #     [1, 0, 1],
+    #     [2, 1, 1],
+    #     [2, 1, 0]
+    # ]
+    result = who_won([[1]])
+    print(result)
