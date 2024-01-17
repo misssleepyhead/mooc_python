@@ -1,0 +1,18 @@
+# Write your solution here
+phonebook = {}
+while True:
+    c = input("command (1 search, 2 add, 3 quit):")
+    if c == "2":
+        name = input("name:")
+        number = input("number:")
+        phonebook[name] = number
+        print("ok!")
+    elif c == "1":
+        name = input("name:")
+        if name not in phonebook:
+            print("no number")
+        else:
+            print(phonebook[name])
+    elif c == "3":
+        print("quitting...")
+        break
