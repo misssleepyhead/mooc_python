@@ -1,0 +1,36 @@
+# Write your solution here
+def main():
+    phonebook = {}
+    while True:
+        c = input("command (1 search, 2 add, 3 quit):")
+        if c == "2":
+            add(phonebook)
+        elif c == "1":
+            search(phonebook)
+
+        elif c == "3":
+            print("quitting...")
+            break
+
+
+def search(phonebook):
+    name = input("name:")
+    if name not in phonebook:
+        print("no number")
+    else:
+        for number in phonebook[name]:
+            print(number)
+
+
+def add(phonebook):
+    name = input("name:")
+    number = input("number:")
+    if name not in phonebook:
+        phonebook[name] = []
+        phonebook[name].append(number)
+    elif name in phonebook:
+        phonebook[name].append(number)
+    print("ok!")
+
+
+main()
