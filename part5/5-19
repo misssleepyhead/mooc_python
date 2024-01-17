@@ -1,0 +1,14 @@
+# Write your solution here
+def invert(s: dict):
+    new = {}
+    for key, value in s.items():
+        if key not in new:
+            new[value] = key
+    s.clear()
+    s.update(new)
+
+
+if __name__ == "__main__":
+    s = {1: "first", 2: "second", 3: "third", 4: "fourth"}
+    invert(s)
+    print(s)
