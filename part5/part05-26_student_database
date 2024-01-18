@@ -1,0 +1,93 @@
+# Write your solution here
+def main():
+    students = {}
+    add_student(students, "Emily")
+    add_student(students, "Peter")
+    add_course(students, "Emily", ("Software Development Methods", 4))
+    add_course(students, "Emily", ("Software Development Methods", 5))
+    add_course(students, "Peter", ("Data Structures and Algorithms", 3))
+    add_course(students, "Peter", ("Models of Computation", 0))
+    add_course(students, "Peter", ("Data Structures and Algorithms", 2))
+    add_course(students, "Peter", ("Introduction to Computer Science", 1))
+    add_course(students, "Peter", ("Software Engineering", 3))
+    summary(students)
+    summary(students)
+
+
+def score_avg(students: dict, name: str):
+    total = 0
+    count = 0
+    avg = 0
+    for course, score in students[name]:
+        # print(f"  {course} {score}")
+        total += score
+        count += 1
+        avg = total/count
+    return count, avg
+
+
+def print_student(students: dict, name: str):
+    if name not in students:
+        print(f"{name}: no such person in the database")
+    elif len(students[name]) == 0:
+        print(f"{name}:")
+        print(f" no completed courses")
+    elif len(students[name]) >= 1:
+        print(f"{name}:")
+        completed = len(students[name])
+        print(f" {completed} completed courses:")
+        for course, score in students[name]:
+            print(f"  {course} {score}")
+            count, avg = score_avg(students, name)
+        print(f" average grade {avg}")
+
+
+def add_student(students: dict, name: str):
+    if name not in students:
+        students[name] = []
+    return students
+
+
+def add_course(students: dict, name: str, scores: tuple):
+    student = students[name]
+
+    # Check if the course is not in the list and the score is greater than 0
+    if all(course != scores[0] for course, _ in student) and scores[1] > 0:
+        student.append(scores)
+    else:
+        for i, (course, score) in enumerate(student):
+            if course == scores[0]:
+                if scores[1] > score:
+                    student[i] = scores
+
+    return students
+
+
+def summary(students: dict):
+    count_student = 0
+    result = {}
+    for name in students:
+        result[name] = []
+        (count, avg) = score_avg(students, name)
+        result[name].append(count)
+        result[name].append(avg)
+    # print(result)
+    class_max = 0
+    class_max_name = ""
+    score_highest = 0
+    score_highest_name = ""
+    for name in result:
+        for i in result[name]:
+            if result[name][0] > class_max:
+                class_max = result[name][0]
+                class_max_name = name
+            if result[name][1] > score_highest:
+                score_highest = result[name][1]
+                score_highest_name = name
+    print(f"students {len(students)}")
+    print(f"most courses completed {class_max} {class_max_name}")
+    print(f"best average grade {score_highest} {score_highest_name}")
+
+
+if __name__ == "__main__":
+    main()
