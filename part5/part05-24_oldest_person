@@ -1,0 +1,29 @@
+# Write your solution here
+def oldest_person(people: list):
+
+    oldest_name = ""
+    old = []
+    for p in people:
+        old.append(p[1])
+    # print(old)
+    oldest_year = old[0]
+    for i in old:
+        if i < oldest_year:
+            oldest_year = i
+    # print(oldest_year)
+
+    for person in people:
+        if person[1] == oldest_year:
+            oldest_name = person[0]
+    # print(oldest_name)
+    return oldest_name
+
+
+if __name__ == "__main__":
+    p1 = ("Adam", 1977)
+    p2 = ("Ellen", 1985)
+    p3 = ("Mary", 1953)
+    p4 = ("Ernest", 1997)
+    people = [p1, p2, p3, p4]
+
+    print(oldest_person(people))
