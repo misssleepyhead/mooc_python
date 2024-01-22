@@ -1,0 +1,15 @@
+# write your solution here
+def largest():
+    with open("src/numbers.txt") as file:
+        # print(numbers)
+        max_number = 0
+        for number in file:
+            number = number.replace("\n", "")
+
+            if int(number) > max_number:
+                max_number = int(number)
+        return max_number
+
+
+if __name__ == "__main__":
+    largest()
