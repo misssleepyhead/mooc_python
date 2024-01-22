@@ -1,0 +1,52 @@
+# write your solution here
+def matrix_sum():
+    with open("src/matrix.txt") as file:
+        all_numbers = []
+        for line in file:
+            line = line.replace("\n", "")
+            numbers = line.split(",")
+            for n in numbers:
+                all_numbers.append(int(n))
+        # print(all_numbers)
+            result = sum_up(all_numbers)
+        return int(result)
+
+
+def matrix_max():
+    with open("src/matrix.txt") as file:
+        all_numbers = []
+        for line in file:
+            line = line.replace("\n", "")
+            numbers = line.split(",")
+            for n in numbers:
+                all_numbers.append(int(n))
+        # print(all_numbers)
+        result = max(all_numbers)
+        return result
+
+
+def row_sums():
+    with open("src/matrix.txt") as file:
+        all_rows = []
+        for line in file:
+            line = line.replace("\n", "")
+            numbers = line.split(",")
+            nums = []
+            for n in numbers:
+                nums.append(int(n))
+            all_rows.append(sum_up(nums))
+        return all_rows
+
+
+def sum_up(numbers):
+    result = 0
+    for i in numbers:
+
+        result += i
+    return result
+
+
+if __name__ == "__main__":
+    print(matrix_sum())
+    print(matrix_max())
+    print(row_sums())
