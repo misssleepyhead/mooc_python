@@ -1,0 +1,69 @@
+if True:
+    student_file = input('Student information: ')
+    exercises_file = input('Exercises completed: ')
+    exams_file = input("Exam points:")
+else:
+    student_file = 'students2.csv'
+    exercises_file = 'exercises2.csv'
+    exams_file = 'exam_points2.csv'
+
+students = {}
+with open(student_file) as file:
+    for line in file:
+        line = line.strip()
+        parts = line.split(";")
+        if parts[0] == "id":
+            continue
+        students[parts[0]] = f"{parts[1]} {parts[2]}"
+    
+
+exercises = {}
+with open(exercises_file) as file:
+    for line in file:
+        line = line.strip()
+        parts = line.split(";")
+        if parts[0] == "id":
+            continue
+        total = 0
+        for i in range(1, 8):
+            total += int(parts[i])
+        exercises[parts[0]] = ((total/40)*100)//10
+    
+
+exams = {}
+with open(exams_file) as file:
+    for line in file:
+        line = line.strip()
+        parts = line.split(";")
+        if parts[0] == "id":
+            continue
+        total = 0
+        for i in range(1, 4):
+            total += int(parts[i])
+        exams[parts[0]] = total
+   
+
+results = {}
+total_points = 0
+grade = 0
+for id1, name in students.items():
+    for id2, exercise_points in exercises.items():
+        for id3, exam_points in exams.items():
+            if id1 == id2 == id3:
+                total_points = exercise_points + exam_points
+                if 0 <= total_points <= 14:
+                    grade = 0
+                elif 15 <= total_points <= 17:
+                    grade = 1
+                elif 18 <= total_points <= 20:
+                    grade = 2
+                elif 21 <= total_points <= 23:
+                    grade = 3
+                elif 24 <= total_points <= 27:
+                    grade = 4
+                elif total_points >= 28:
+                    grade = 5
+                results[name] = grade
+
+for i in results:
+    print(f"{i} {results[i]}")
