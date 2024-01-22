@@ -1,0 +1,43 @@
+# write your solution here
+
+
+def caculate(filename):
+    result = {}
+    with open(filename) as file:
+        for line in file:
+            line = line.strip()
+            parts = line.split(";")
+
+            if parts[0] == "id":
+                continue
+
+            result[parts[0]] = parts[1:]
+        return result
+
+
+def main():
+    if True:
+        student_file = input('Student information: ')
+        exercises_file = input('Exercises completed: ')
+    else:
+        student_file = 'students1.csv'
+        exercises_file = 'exercises1.csv'
+
+    student_name = caculate(student_file)
+    exercise = caculate(exercises_file)
+    # print(student_name)
+    # print(exercise)
+    total = 0
+    result = {}
+    for id1, e in exercise.items():
+        for id2, name in student_name.items():
+            if id1 == id2:
+                result[id1] = []
+                result[id1].append(name)
+                for i in e:
+                    total += int(i)
+                print(f"{name[0]} {name[1]} {total}")
+                total = 0
+
+
+main()
