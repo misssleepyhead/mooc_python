@@ -1,0 +1,23 @@
+# write your solution here
+words = input("Write text: ")
+# words = "This is acually a good and usefull program"
+with open("wordlist.txt") as file:
+    all_words = []
+    for line in file:
+        line = line.replace("\n", "")
+        all_words.append(line)
+    # print(all_words)
+word = words.split(" ")
+result = ""
+
+count = 0
+for n in word:
+    if n.lower() in all_words and count < 1:
+        result += n
+        result += " "
+    if n.lower() not in all_words and count < 1:
+        result += f"*{n}*"
+        result += " "
+        count = 1
+    count = 0
+print(result)
