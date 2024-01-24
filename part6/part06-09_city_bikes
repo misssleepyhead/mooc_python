@@ -1,0 +1,72 @@
+import math
+
+
+def read(filename: str):
+    """read file and append in a list"""
+    filelist = []
+    with open(filename) as file:
+        for line in file:
+            line = line.strip()
+            filelist.append(line)
+    # print(filelist)
+    return filelist
+
+
+def get_station_data(filename: str):
+    """Distance between stations"""
+    filelist = read(filename)
+    stations = {}
+    for line in filelist:
+        parts = line.split(";")
+        if parts[0] == "Longitude":
+            continue
+        stations[parts[3]] = (float(parts[0]), float(parts[1]))
+    # print(stations)
+    return stations
+
+
+def distance(stations: dict, station1: str, station2: str):
+    """returns the distance between the two stations given as arguments."""
+    for name in stations:
+        if name == station1:
+            # print(stations[s])
+            d = stations[name]
+            longitude1 = d[0]
+            latitude1 = d[1]
+        elif name == station2:
+            # print(stations[s])
+            d = stations[name]
+            longitude2 = d[0]
+            latitude2 = d[1]
+    x_km = (longitude1 - longitude2) * 55.26
+    y_km = (latitude1 - latitude2) * 111.2
+    distance_km = math.sqrt(x_km**2 + y_km**2)
+    return distance_km
+
+
+def greatest_distance(stations: dict):
+    """ two stations on the list with the greatest distance from each other"""
+    greatest_d = 0
+    s1 = ""
+    s2 = ""
+    for name1, dis1 in stations.items():
+        for name2, dis2 in stations.items():
+            if name1 != name2:
+                d = distance(stations, name1, name2)
+                if d > greatest_d:
+                    greatest_d = d
+                    s1 = name1
+                    s2 = name2
+                    # print(greatest_d)
+    return s1, s2, greatest_d
+
+
+if __name__ == "__main__":
+    stations = get_station_data('stations1.csv')
+    d = distance(stations, "Designmuseo", "Hietalahdentori")
+    print(d)
+    d = distance(stations, "Laivasillankatu", "Hietalahdentori")
+    print(d)
+    stations = get_station_data('stations1.csv')
+    station1, station2, greatest = greatest_distance(stations)
+    print(station1, station2, greatest)
