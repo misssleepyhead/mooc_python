@@ -1,0 +1,74 @@
+# Write your solution here
+def read(filename: str):
+    filelist = []
+    with open(filename) as file:
+        for line in file:
+            line = line.strip()
+            filelist.append(line)
+    # print(filelist)
+    return filelist
+
+
+def create_recipes(filename: str):
+    filelist = read(filename)
+    recipes = {}
+    for i in filelist:
+        i = i.strip()
+        if i:
+            if i[0].istitle():
+                new_receipe = i
+                recipes[new_receipe] = []
+            else:
+                recipes[new_receipe].append(i)
+    # print(recipes)
+    return recipes
+
+
+def search_by_name(filename: str, word: str):
+    """Search for recipes based on the name of the recip"""
+    recipes = create_recipes(filename)
+    found = []
+    for food in recipes:
+        if word in food.lower():
+            found.append(food)
+    return found
+
+
+def search_by_time(filename: str, prep_time: int):
+    """Search for recipes based on the preparation time"""
+    recipes = create_recipes(filename)
+    found = []
+    for food, prep in recipes.items():
+        # print(food, prep[0])
+        if int(prep[0]) <= prep_time:
+            found.append(f"{food}, preparation time {int(prep[0])} min")
+    # print(found)
+    return found
+
+
+def search_by_ingredient(filename: str, ingredient: str):
+    """Search for recipes based on the ingredients"""
+    recipes = create_recipes(filename)
+    found = []
+    for food, prep in recipes.items():
+        if ingredient in prep:
+            found.append(f"{food}, preparation time {int(prep[0])} min")
+    return found
+
+
+if __name__ == "__main__":
+    # found_recipes = search_by_name("recipes1.txt", "cake")
+
+    # for recipe in found_recipes:
+    #     print(recipe)
+    found_recipes = search_by_time("recipes1.txt", 20)
+
+    for recipe in found_recipes:
+        print(recipe)
+    # found_recipes = search_by_ingredient("recipes1.txt", "eggs")
+
+    # for recipe in found_recipes:
+    #     print(recipe)
+#     search_by_name("recipes1.txt", "cake")
+#     search_by_time("recipes1.txt", 15)
+# # create_recipes("recipes1.txt")
