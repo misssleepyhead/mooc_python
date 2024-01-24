@@ -1,0 +1,19 @@
+# Write your solution here
+while True:
+    print("1 - add an entry, 2 - read entries, 0 - quit")
+    mode = input("Function:")
+    if mode == "1":
+        write_input = input("Diary entry: ")
+        with open("diary.txt", "a") as file:
+            file.write(f"{write_input}\n")
+        print("Diary saved")
+        file.close()
+    elif mode == "2":
+        print("Entries:")
+        with open("diary.txt") as file:
+            for line in file:
+                print(line)
+        file.close()
+    elif mode == "0":
+        print("Bye now!")
+        break
