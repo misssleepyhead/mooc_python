@@ -1,0 +1,27 @@
+# Write your solution here
+def filter_solutions():
+    with open("solutions.csv") as file:
+        correct = []
+        incorrect = []
+        for line in file:
+            line = line.strip()
+            parts = line.split(";")
+            # print(eval(parts[1]), int(parts[2]))
+            d = int(eval(parts[1]))
+            if d == int(parts[2]):
+                correct.append(parts)
+            else:
+                incorrect.append(parts)
+
+    with open("correct.csv", "w") as correct_file:
+        for line in correct:
+            correct_file.write(f"{line[0]};{line[1]};{line[2]}\n")
+
+    with open("incorrect.csv", "w") as incorrect_file:
+        for line in incorrect:
+            incorrect_file.write(f"{line[0]};{line[1]};{line[2]}\n")
+
+
+print("ok")
+if __name__ == "__main__":
+    filter_solutions()
