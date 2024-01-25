@@ -1,0 +1,64 @@
+# Write your solution here
+def read_file(filename):
+    wordslist = []
+    with open("src/words.txt") as file:
+        for line in file:
+            line = line.strip()
+            wordslist.append(line)
+    # print(wordslist)
+    return wordslist
+
+
+def find_words(search_term: str):
+    search = search_term.lower()
+    if "." in search:
+        result = dot(search)
+    elif "*" in search:
+        result = star(search)
+    elif "." not in search and "*" not in search:
+        result = normal(search)
+
+    return result
+
+
+def dot(search: str):
+    wordlist = read_file("src/words.txt")
+    found = []
+    for word in wordlist:
+        if len(search) == len(word):
+            match = True
+            for i in range(len(search)):
+                if search[i] != "." and search[i] != word[i]:
+                    match = False
+                    break
+            if match:
+                found.append(word)
+    return found
+
+
+def star(search: str):
+    wordlist = read_file("src/words.txt")
+    found = []
+    for word in wordlist:
+        if search.startswith("*"):
+            if word.endswith(search[1:]):
+                found.append(word)
+        elif search.endswith("*"):
+            if word.startswith(search[:-1]):
+                found.append(word)
+
+    return found
+
+
+def normal(search: str):
+    found = []
+    wordlist = read_file("src/words.txt")
+    if search in wordlist:
+        found.append(search)
+    return found
+
+
+if __name__ == "__main__":
+    print(find_words("ye.led"))
+    print(find_words("zeroes"))
+    print(find_words("*vokes"))
