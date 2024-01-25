@@ -1,0 +1,24 @@
+# Write your solution here
+from string import punctuation, ascii_letters
+
+
+def separate_characters(my_string: str):
+    first = ""
+    second = ""
+    third = ""
+    for i in my_string:
+        if i in ascii_letters:
+            first += i
+            # print(first)
+        elif i in punctuation:
+            second += i
+        else:
+            third += i
+    return (first, second, third)
+
+
+if __name__ == "__main__":
+    parts = separate_characters("Olé!!! Hey, are ümläüts wörking?")
+    print(parts[0])
+    print(parts[1])
+    print(parts[2])
