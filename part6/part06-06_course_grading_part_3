@@ -1,3 +1,4 @@
+# tee ratkaisu tänne
 if True:
     student_file = input('Student information: ')
     exercises_file = input('Exercises completed: ')
@@ -6,6 +7,26 @@ else:
     student_file = 'students1.csv'
     exercises_file = 'exercises1.csv'
     exams_file = 'exam_points1.csv'
+
+
+def to_points(number):
+    return number // 4
+
+
+def to_grade(points):
+    if 0 <= total_points <= 14:
+        grade = 0
+    elif 15 <= total_points <= 17:
+        grade = 1
+    elif 18 <= total_points <= 20:
+        grade = 2
+    elif 21 <= total_points <= 23:
+        grade = 3
+    elif 24 <= total_points <= 27:
+        grade = 4
+    elif total_points >= 28:
+        grade = 5
+    return grade
 
 
 students = {}
@@ -28,9 +49,9 @@ with open(exercises_file) as file:
         total = 0
         for i in range(1, 8):
             total += int(parts[i])
-            exec_pts = int(((total/40)*100)//10)
+            # exec_pts = int(((total/40)*100)//10)
 
-        exercises[parts[0]] = [total, exec_pts]
+        exercises[parts[0]] = total
     # print(exercises)
 
 
@@ -51,27 +72,6 @@ with open(exams_file) as file:
 results = {}
 total_points = 0
 grade = 0
-for id1, name in students.items():
-    for id2, exercise_points in exercises.items():
-        for id3, exam_points in exams.items():
-            if id1 == id2 == id3:
-                total_points = exercise_points[1] + exam_points
-
-                if 0 <= total_points <= 14:
-                    grade = 0
-                elif 15 <= total_points <= 17:
-                    grade = 1
-                elif 18 <= total_points <= 20:
-                    grade = 2
-                elif 21 <= total_points <= 23:
-                    grade = 3
-                elif 24 <= total_points <= 27:
-                    grade = 4
-                elif total_points >= 28:
-                    grade = 5
-                results[name] = [exercise_points[0], exercise_points[1],
-                                 exam_points, total_points, grade]
-# print(results)
 
 w1 = "name"
 r1 = "exec_nbr"
@@ -80,6 +80,10 @@ r3 = "exm_pts."
 r4 = "tot_pts."
 r5 = "grade"
 print(f"{w1:30}{r1:10}{r2:10}{r3:10}{r4:10}{r5}")
-for name, points in results.items():
-    print(
-        f"{name:30}{points[0]:<10}{points[1]:<10}{points[2]:<10}{points[3]:<10}{points[4]:<10}")
+for sid, name in students.items():
+    exec_nbr = exercises[sid]
+    exec_score = to_points(exec_nbr)
+    exams_points = exams[sid]
+    total_points = exec_score + exams_points
+    grades = to_grade(total_points)
+    print(f"{name:30}{exec_nbr:<10}{exec_score:<10}{exams_points:<10}{total_points:<10}{grades:<10}")
