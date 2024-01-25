@@ -1,0 +1,17 @@
+# Write your solution here
+def read_input(message, low, limit):
+    while True:
+        try:
+            n = int(input(message))
+            if low <= n < limit:
+                return n
+
+        except ValueError:
+            pass
+
+        print(f"You must type in an integer between {low} and {limit}")
+
+
+if __name__ == "__main__":
+    number = read_input("Please type in a number: ", 5, 10)
+    print("You typed in:", number)
