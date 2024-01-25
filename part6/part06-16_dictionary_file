@@ -1,0 +1,35 @@
+# Write your solution here
+def main():
+    while True:
+        filename = "dictionary.txt"
+        print("1 - Add word, 2 - Search, 3 - Quit")
+        function = input("Function:")
+        if function == "1":
+            add_word(filename)
+        elif function == "2":
+            search(filename)
+        if function == "3":
+            print("Bye!")
+            break
+
+
+def add_word(filename: str):
+    words = []
+    with open(filename, "a") as file:
+        f = input("The word in Finnish:")
+        e = input("The word in English:")
+        file.write(f"{f};{e}\n")
+        print("Dictionary entry added")
+
+
+def search(filename: str):
+    with open(filename) as file:
+        search_word = input("Search term:")
+        for line in file:
+            line = line.strip()
+            parts = line.split(";")
+            if search_word in parts[0] or search_word in parts[1]:
+                print(f"{parts[0]} - {parts[1]}")
+
+
+main()
