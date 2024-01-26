@@ -1,0 +1,13 @@
+# Write your solution here
+from random import sample
+
+
+def lottery_numbers(amount: int, lower: int, upper: int):
+    lottery_pool = list(range(lower, upper+1))
+    results = sample(lottery_pool, amount)
+    return sorted(results)
+
+
+if __name__ == "__main__":
+    for number in lottery_numbers(3, 2, 22):
+        print(number)
