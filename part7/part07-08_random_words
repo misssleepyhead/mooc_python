@@ -1,0 +1,21 @@
+# Write your solution here
+from random import choice, sample
+
+
+def words(n: int, beginning: str):
+    """ return a list containg n random word that startswith(beginning)"""
+    wordslist = []
+    result = []
+    with open("src/words.txt") as file:
+        for line in file:
+            line = line.strip()
+            if line.startswith(beginning):
+                wordslist.append(line)
+
+    return sample(wordslist, n)
+
+
+if __name__ == "__main__":
+    word_list = words(10, "ca")
+    for word in word_list:
+        print(word)
