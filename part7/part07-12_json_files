@@ -1,0 +1,19 @@
+# Write your solution here
+import json
+
+
+def print_persons(filename: str):
+    with open(filename) as file:
+        data = file.read()
+    people = json.loads(data)
+    for person in people:
+        hobbies = ', '.join(person['hobbies'])
+
+        print(
+            f"{person['name']} {person['age']} years ({hobbies})")
+
+
+if __name__ == "__main__":
+    print_persons("src/file1.json")
+    # Peter Pythons 27 years (coding, knitting)
+    # Jean Javanese 24 years (coding, rock climbing, reading)
