@@ -1,0 +1,35 @@
+# Write your solution here
+from datetime import datetime, timedelta
+
+filename = input("Filename:")
+startdate = input("Starting date:")
+duration = int(input("How many days:"))
+start = datetime.strptime(startdate, "%d.%m.%Y")
+d = timedelta(days=duration)
+last_day = start + d
+screen_time = []
+d_days = []
+print("Please type in screen time in minutes on each day (TV computer mobile):")
+while start < last_day:
+    days = start.strftime("%d.%m.%Y")
+    s = input(f"Screen time {days}:")
+    d_days.append(days)
+    screen_time.append(s.split(" "))
+    start += timedelta(days=1)
+print(f"Data stored in file {filename}")
+
+
+with open(filename, "w") as file:
+
+    file.write(f"Time period: {d_days[0]}-{d_days[-1]}\n")
+    total = 0
+    dates = []
+    for time in screen_time:
+        total += int(time[0]) + int(time[1])+int(time[2])
+        date = f"{time[0]}/{time[1]}/{time[2]}\n"
+        dates.append(date)
+    file.write(f"Total minutes: {total}\n")
+    file.write(f"Average minutes: {float(total/duration)}\n")
+    for index, day in enumerate(dates):
+        file.write(
+            f'{d_days[index]}: {screen_time[index][0]}/{screen_time[index][1]}/{screen_time[index][2]}\n')
