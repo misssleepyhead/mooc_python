@@ -1,0 +1,56 @@
+# Write your solution here
+import urllib.request
+import json
+from math import floor
+
+
+def retrieve_all():
+
+    my_request = urllib.request.urlopen(
+        "https://studies.cs.helsinki.fi/stats-mock/api/courses")
+    data = my_request.read()
+    courses = json.loads(data)
+    # print(data)
+    active = []
+    for course in courses:
+        if course["enabled"] == True:
+            active_tp = (course['fullName'], course['name'],
+                         course['year'], sum(course['exercises']))
+            active.append(active_tp)
+    # print(active)
+    return active
+
+
+def retrieve_course(course_name: str):
+    course_url = f"https://studies.cs.helsinki.fi/stats-mock/api/courses/{course_name}/stats"
+    request = urllib.request.urlopen(course_url)
+    data = request.read()
+    courses = json.loads(data)
+    course_info = {}
+    weeks = 0
+    students = 0
+    hours = 0
+    hours_average = 0
+    exercises = 0
+    exercises_average = 0
+    for week, info in courses.items():
+        weeks += 1
+        if info["students"] > students:
+            students = info["students"]
+        hours += info["hour_total"]
+        exercises += info["exercise_total"]
+    hours_average = floor(hours/students)
+    exercises_average = floor(exercises/students)
+    course_info["weeks"] = weeks
+    course_info["students"] = students
+    course_info["hours"] = hours
+    course_info["hours_average"] = hours_average
+    course_info["exercises"] = exercises
+    course_info["exercises_average"] = exercises_average
+
+    return course_info
+
+
+if __name__ == "__main__":
+    retrieve_all()
+    print(retrieve_course("docker2019"))
