@@ -1,0 +1,42 @@
+# Write your solution here
+from datetime import datetime, timedelta
+
+
+def is_it_valid(pic: str):
+    control = "0123456789ABCDEFHJKLMNPRSTUVWXY"
+    if len(pic) != 11:
+        return False
+
+    try:
+        dd = int(pic[0:2])
+        mm = int(pic[2:4])
+        yy = int(pic[4:6])
+        x = pic[6]
+        p_identifier = pic[7:9]
+        z = pic[10]
+        nine_digit = pic[0:6]+pic[7:10]
+        remain = int(nine_digit) % 31
+        control_z = control[remain]
+
+        if dd < 1 or dd > 31 or mm > 12 or mm < 1 or x not in ("-", "+", "A") or z != control_z:
+            return False
+        century = 0
+        if x == '-':
+            century = 1800
+        elif x == '+':
+            century = 1900
+        elif x == 'A':
+            century = 2000
+
+        dob_year = century + yy
+
+        datetime(dob_year, mm, dd)
+
+        return True
+
+    except:
+        return False
+
+
+if __name__ == "__main__":
+    print(is_it_valid("290200-1239"))
