@@ -1,0 +1,41 @@
+# Write your solution here
+import csv
+from datetime import datetime, timedelta
+
+
+def readfile():
+    students = {}
+    with open("src/start_times.csv") as file:
+        for line in csv.reader(file, delimiter=";"):
+            student = line[0]
+            start_t = datetime.strptime(line[1], "%H:%M")
+            # start_time = start_t.strftime("%H:%M")
+            students[student] = {
+                'start': start_t,
+                'subtime': []
+            }
+    with open("src/submissions.csv") as file:
+        for line in csv.reader(file, delimiter=";"):
+            student = line[0]
+            sub_t = datetime.strptime(line[3], "%H:%M")
+            # sub_time = sub_t.strftime("%H:%M")
+            students[student]['subtime'].append(sub_t)
+    return students
+
+
+def cheaters():
+    students_data = readfile()
+    cheaters = []
+    for name, info in students_data.items():
+        start_time = info["start"]
+        # print(start_time)
+        sub_time = info["subtime"]
+        for time in sub_time:
+            if time > (start_time + timedelta(hours=3)):
+                cheaters.append(name)
+                break
+    return cheaters
+
+
+if __name__ == "__main__":
+    cheaters()
