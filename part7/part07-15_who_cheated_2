@@ -1,0 +1,50 @@
+import csv
+from datetime import datetime, timedelta
+
+
+def final_points():
+    students_points = {}
+
+    with open("src/start_times.csv") as start_file, open("src/submissions.csv") as sub_file:
+        for line in csv.reader(start_file, delimiter=";"):
+            name = line[0]
+            start_t = datetime.strptime(line[1], "%H:%M")
+            students_points[name] = {
+                "start": start_t
+            }
+
+        for line in csv.reader(sub_file, delimiter=";"):
+            name = line[0]
+            task = int(line[1])
+            points = int(line[2])
+            sub_t = datetime.strptime(line[3], "%H:%M")
+
+            if task not in students_points[name]:
+                students_points[name][task] = {
+                    "points": points,
+                    "subtime": sub_t
+                }
+
+            elif task in students_points[name] and points > students_points[name][task]["points"] and sub_t < students_points[name]["start"] + timedelta(hours=3):
+
+                students_points[name][task]["points"] = points
+                students_points[name][task]["subtime"] = sub_t
+
+    final = {}
+    for name, info in students_points.items():
+        valid_points = [
+            item['points'] for task, item in info.items()
+            if isinstance(item, dict) and 'subtime' in item
+        ]
+        final[name] = sum(valid_points)
+
+    return final
+
+
+def main():
+    result = final_points()
+    print(result)
+
+
+if __name__ == "__main__":
+    main()
