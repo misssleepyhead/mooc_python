@@ -1,0 +1,51 @@
+# Write your solution here
+
+
+def change_case(orig_string: str):
+    change = ""
+    for i in orig_string:
+        if i.islower():
+            i = i.upper()
+            change += i
+        elif i.isupper():
+            i = i.lower()
+            change += i
+        else:
+            change += i
+    return change
+
+
+def split_in_half(orig_string: str):
+    length = len(orig_string)
+    # print(length)
+    first = ""
+    second = ""
+    if length % 2 == 0:
+        part = length // 2
+        first = orig_string[0:part]
+        second = orig_string[part:]
+    elif length % 2 != 0:
+        part1 = length // 2
+        part2 = length - part1
+        first = orig_string[0:part1]
+        second = orig_string[part1:]
+    return (first, second)
+
+
+def remove_special_characters(orig_string: str):
+    result = ""
+    for i in orig_string:
+        if i.isalpha() or i.isdigit() or i.isspace():
+            result += i
+    return result
+
+
+if __name__ == "__main__":
+    my_string = "Well hello there!"
+    print(change_case(my_string))
+    p1, p2 = split_in_half(my_string)
+    print(p1)
+    print(p2)
+    m2 = remove_special_characters(
+        "This is a test, lets see how it goes!!!11!")
+    print(m2)
