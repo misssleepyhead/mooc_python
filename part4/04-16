@@ -1,0 +1,11 @@
+# Write your solution here
+now = []
+while True:
+    item = int(input("New item:"))
+    if item == 0:
+        print("Bye!")
+        break
+    now.append(item)
+    in_order = sorted(now)
+    print(f"The list now: {now}")
+    print(f"The list in order: {in_order}")
