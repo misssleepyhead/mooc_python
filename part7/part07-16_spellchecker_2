@@ -1,0 +1,60 @@
+# Write your solution here
+from difflib import get_close_matches
+
+
+def readfile(words: str):
+    with open("src/wordlist.txt") as file:
+        all_words = []
+        for line in file:
+            line = line.replace("\n", "")
+            all_words.append(line)
+    return all_words
+
+
+def wrong_words(words: str, all_words: list):
+    word = words.split(" ")
+    result = ""
+    count = 0
+    wrong = []
+    for n in word:
+        if n.lower() in all_words and count < 1:
+            result += n
+            result += " "
+            count = 1
+        if n.lower() not in all_words and count < 1:
+            wrong.append(n)
+            result += f"*{n}*"
+            result += " "
+            count = 1
+        count = 0
+    return result, wrong
+
+
+def matches(wrong_words: list, words: str):
+    all_words = readfile(words)
+    suggest = {}
+    # print(wrong_words)
+    for word in wrong_words:
+        suggest[word] = []
+        match_words = get_close_matches(word, all_words)
+        suggest[word].append(match_words)
+    # print(suggest)
+    return suggest
+
+
+def main():
+    words = input("Write text: ")
+    # words = "This is acually a good and usefull program"
+    all_words = readfile(words)
+    result, wrong = wrong_words(words, all_words)
+    suggestions = matches(wrong, words)
+    print(result)
+    print("suggestions:")
+
+    for wrong, match in suggestions.items():
+        match_list = [word for sublist in match for word in sublist]
+        words = ','.join(match_list)
+        print(f"{wrong}: {words}")
+
+
+main()
