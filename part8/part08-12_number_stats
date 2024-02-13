@@ -1,0 +1,49 @@
+# Write your solution here!
+class NumberStats:
+    def __init__(self):
+        self.numbers = 0
+        self.values = []
+
+    def add_number(self, number: int):
+        self.numbers += 1
+        self.values.append(number)
+
+    def count_numbers(self):
+        return self.numbers
+
+    def get_sum(self):
+        total = sum(self.values)
+        return total
+
+    def average(self):
+        try:
+            return sum(self.values) / self.numbers
+        except:
+            return 0
+
+    def even_sum(self):
+        total = 0
+        for i in self.values:
+            if i % 2 == 0:
+                total += i
+        return total
+
+    def odd_sum(self):
+        total = 0
+        for i in self.values:
+            if i % 2 != 0:
+                total += i
+        return total
+
+
+stats = NumberStats()
+while True:
+    number = int(input("Please type in integer numbers:"))
+    if number == -1:
+        break
+    stats.add_number(number)
+print("Numbers added:", stats.count_numbers())
+print("Sum of numbers:", stats.get_sum())
+print("Mean of numbers:", stats.average())
+print("Sum of even numbers:", stats.even_sum())
+print("Sum of odd numbers:", stats.odd_sum())
