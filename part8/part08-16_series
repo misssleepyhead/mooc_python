@@ -1,0 +1,71 @@
+# Write your solution here:
+class Series:
+    def __init__(self, title: str, seasons: int, genres: list, ratings: list = "no rating"):
+        self.title = title
+        self.seasons = seasons
+        self.genres = genres
+        self.ratings = []
+
+    def __str__(self):
+        genre = ", ".join(self.genres)
+        to_print = ""
+
+        if len(self.ratings) >= 1:
+            to_print += f"{self.title} ({self.seasons} seasons)\ngenres: {genre}  \n{len(self.ratings)} ratings, average {self.avg_rate()} points"
+
+        elif len(self.ratings) == 0:
+            to_print += f"{self.title} ({self.seasons} seasons)\ngenres: {genre}  \nno ratings"
+
+        return to_print
+
+    def rate(self, ratings: int):
+        self.ratings.append(ratings)
+
+    def avg_rate(self):
+        avg = sum(self.ratings)/len(self.ratings)
+        return round(avg, 1)
+
+
+def minimum_grade(rating: float, series_list: list):
+    result = []
+    for series in series_list:
+        if series.avg_rate() > rating:
+            result.append(series)
+    return result
+
+
+def includes_genre(genre: str, series_list: list):
+    result = []
+    for series in series_list:
+        if genre in series.genres:
+            result.append(series)
+    return result
+
+
+if __name__ == "__main__":
+    s1 = Series("Dexter", 8, ["Crime", "Drama", "Mystery", "Thriller"])
+    s1.rate(5)
+
+    s2 = Series("South Park", 24, ["Animation", "Comedy"])
+    s2.rate(3)
+
+    s3 = Series("Friends", 10, ["Romance", "Comedy"])
+    s3.rate(2)
+
+    series_list = [s1, s2, s3]
+
+    print("a minimum grade of 4.5:")
+    for series in minimum_grade(4.5, series_list):
+        print(series.title)
+
+    print("genre Comedy:")
+    for series in includes_genre("Comedy", series_list):
+        print(series.title)
+
+    dexter = Series("Dexter", 8, ["Crime", "Drama", "Mystery", "Thriller"])
+    dexter.rate(4)
+    dexter.rate(5)
+    dexter.rate(5)
+    dexter.rate(3)
+    dexter.rate(0)
+    print(s1)
