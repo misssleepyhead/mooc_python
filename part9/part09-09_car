@@ -1,0 +1,35 @@
+# WRITE YOUR SOLUTION HERE:
+class Car:
+    def __init__(self, petrol=0, odometer=0):
+        self._petrol = petrol
+        self._odometer = odometer
+
+    def fill_up(self):
+        self._petrol = 60
+
+    def drive(self, km: int):
+        if km <= self._petrol:
+            self._odometer += km
+            self._petrol -= km
+        else:
+            self._odometer += self._petrol
+            self._petrol = 0
+
+    def __str__(self):
+        return f"Car: odometer reading {self._odometer} km, petrol remaining {self._petrol} litres"
+
+
+if __name__ == "__main__":
+    car = Car()
+    print(car)
+    car.fill_up()
+    print(car)
+    car.drive(20)
+    print(car)
+    car.drive(50)
+    print(car)
+    car.drive(10)
+    print(car)
+    car.fill_up()
+    car.fill_up()
+    print(car)
