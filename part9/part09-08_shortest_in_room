@@ -1,0 +1,66 @@
+# WRITE YOUR SOLUTION HERE:
+class Person:
+    def __init__(self, name: str, height: int):
+        self.name = name
+        self.height = height
+
+    def __str__(self):
+        return self.name
+
+
+class Room:
+    def __init__(self):
+        self.person_list = []
+
+    def add(self, person: Person):
+        self.person_list.append(person)
+
+    def is_empty(self):
+        return len(self.person_list) == 0
+
+    def print_contents(self):
+        if not self.is_empty():
+            total = 0
+            persons = ""
+            for person in self.person_list:
+                persons += f"{person.name} ({person.height} cm)\n"
+                total += person.height
+            print(
+                f"There are {len(self.person_list)} persons in the room, and their combined height is {total} cm")
+            print(persons)
+
+    def shortest(self):
+        if not self.is_empty():
+            result = self.person_list[0]
+            for person in self.person_list:
+                if person.height < result.height:
+                    result = person
+            return result
+        return None
+
+    def remove_shortest(self):
+        if self.is_empty():
+            return None
+        removed = self.shortest()
+
+        self.person_list.remove(removed)
+        return removed
+
+
+if __name__ == "__main__":
+    room = Room()
+
+    room.add(Person("Lea", 183))
+    room.add(Person("Kenya", 172))
+    room.add(Person("Nina", 162))
+    room.add(Person("Ally", 166))
+    room.print_contents()
+
+    print()
+
+    removed = room.remove_shortest()
+    print(f"Removed from room: {removed.name}")
+
+    print()
+
+    room.print_contents()
