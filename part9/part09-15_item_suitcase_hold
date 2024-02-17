@@ -1,0 +1,101 @@
+# Write your solution here:
+class Item:
+    def __init__(self, name: str, weight: int):
+        self.__name = name
+        self.__weight = weight
+
+    def name(self):
+        return self.__name
+
+    def weight(self):
+        return self.__weight
+
+    def __str__(self):
+        return f"{self.__name} ({self.__weight} kg)"
+
+
+class Suitcase:
+    def __init__(self, maximum_weight: int):
+        self.__maximum_weight = maximum_weight
+        self.__item = []
+
+    @property
+    def item(self):
+        return self.__item
+
+    def add_item(self, item: Item):
+        # current_weight = item.weight() + self.weight()
+        if self.__maximum_weight >= item.weight():
+            self.__maximum_weight -= item.weight()
+            self.__item.append(item)
+
+    def weight(self):
+        total = 0
+        for item in self.__item:
+            total += item.weight()
+        return total
+
+    def heaviest_item(self):
+        if len(self.__item) == 0:
+            return None
+        heaviest = self.__item[0]
+        for item in self.__item:
+            if item.weight() > heaviest.weight():
+                heaviest = item
+        return heaviest
+
+    def print_items(self):
+        for item in self.__item:
+            print(item)
+
+    def __str__(self):
+        if len(self.__item) == 1:
+            return f"{len(self.__item)} item ({self.weight()} kg)"
+        return f"{len(self.__item)} items ({self.weight()} kg)"
+
+
+class CargoHold:
+    def __init__(self, maximum_weight: int):
+        self.__maximum_weight = maximum_weight
+        self.__cargo = []
+
+    def __weight(self):
+        total = 0
+        for suitcase in self.__cargo:
+            total += suitcase.weight()
+        return total
+
+    def add_suitcase(self, suitcase: Suitcase):
+        total_weight = self.__weight() + suitcase.weight()
+        if total_weight <= self.__maximum_weight:
+            self.__cargo.append(suitcase)
+
+    def print_items(self):
+        for cargo in self.__cargo:
+            cargo.print_items()
+
+    def __str__(self):
+        left = self.__maximum_weight - self.__weight()
+        if len(self.__cargo) == 1:
+            return f"{len(self.__cargo)} suitcase, space for {left} kg"
+        return f"{len(self.__cargo)} suitcases, space for {left} kg"
+
+
+if __name__ == "__main__":
+    book = Item("ABC Book", 2)
+    phone = Item("Nokia 3210", 1)
+    brick = Item("Brick", 4)
+
+    adas_suitcase = Suitcase(10)
+    adas_suitcase.add_item(book)
+    adas_suitcase.add_item(phone)
+
+    peters_suitcase = Suitcase(10)
+    peters_suitcase.add_item(brick)
+
+    cargo_hold = CargoHold(1000)
+    cargo_hold.add_suitcase(adas_suitcase)
+    cargo_hold.add_suitcase(peters_suitcase)
+
+    print("The suitcases in the cargo hold contain the following items:")
+    cargo_hold.print_items()
