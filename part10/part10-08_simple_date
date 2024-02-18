@@ -1,0 +1,64 @@
+# WRITE YOUR SOLUTION HERE:
+
+class SimpleDate:
+    def __init__(self, day: int, month: int, year: int):
+        self._day = day
+        self._month = month
+        self._year = year
+
+    def __str__(self):
+        return f"{self._day}.{self._month}.{self._year}"
+
+    def __gt__(self, another):
+        if self._year > another._year:
+            return True
+        elif self._year == another._year:
+            if self._month > another._month:
+                return True
+            elif self._month == another._month:
+                if self._day > another._day:
+                    return True
+        return False
+
+    def __lt__(self, another):
+        if not self.__gt__(another) and not self.__eq__(another):
+            return True
+        return False
+
+    def __eq__(self, another):
+        if self._year == another._year and self._month == another._month and self._day == another._day:
+            return True
+        return False
+
+    def __ne__(self, another):
+        if not self.__eq__(another):
+            return True
+        return False
+
+    def __add__(self, add_days):
+        year = self._year
+        month = self._month
+        days = self._day + add_days
+        while days > 30:
+            month += 1
+            days -= 30
+        while month > 12:
+            month -= 12
+            year += 1
+        return SimpleDate(days, month, year)
+
+    def __sub__(self, another):
+        return abs(self.convert_days()-another.convert_days())
+
+    def convert_days(self):
+        return (self._year-1)*12*30 + (self._month-1)*30 + self._day
+
+
+if __name__ == "__main__":
+    d1 = SimpleDate(4, 10, 2020)
+    d2 = SimpleDate(2, 11, 2020)
+    d3 = SimpleDate(28, 12, 1985)
+
+    print(d2-d1)
+    print(d1-d2)
+    print(d1-d3)
