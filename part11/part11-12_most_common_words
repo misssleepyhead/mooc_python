@@ -1,0 +1,17 @@
+# WRITE YOUR SOLUTION HERE:
+def most_common_words(filename: str, lower_limit: int):
+    with open(filename) as file:
+        all_words = []
+        for line in file:
+            line = line.split(" ")
+            for word in line:
+                all_words.append(word.strip(".\n,"))
+        # print(all_words)
+        all_count = {word: all_words.count(word) for word in all_words}
+        result = {word: count for word, count in all_count.items() if count >=
+                  lower_limit}
+        return result
+
+
+if __name__ == "__main__":
+    print(most_common_words("programming.txt", 3))
