@@ -1,0 +1,142 @@
+# tee ratkaisusi tänne
+class Course:
+    def __init__(self, name: str, grade: int, credit: int):
+        self.__name = name
+        self.__grade = grade
+        self.__credit = credit
+
+    def name(self):
+        return self.__name
+
+    def grade(self):
+        return self.__grade
+
+    def credit(self):
+        return self.__credit
+
+    def update_grade(self, grade):
+        if grade > self.__grade:
+            self.__grade = grade
+
+    def update_credits(self, credit):
+        self.__credit = credit
+
+    def __str__(self):
+        return f"{self.__name} ({self.__credit} cr) grade {self.__grade}"
+
+
+class Statistics:
+    def __init__(self):
+        self.__course = {}
+
+    def add_course(self, name, grade, credit):
+        if not name in self.__course:
+            course = Course(name, grade, credit)
+            self.__course[name] = course
+        else:
+            self.__course[name].update_grade(grade)
+            self.__course[name].update_credits(credit)
+
+    def get_data(self, name):
+        if not name in self.__course:
+            return None
+        return self.__course[name]
+
+    def total_courses(self):
+        return len(self.__course)
+
+    def total_credits(self):
+        total = 0
+        for course in self.__course.values():
+            total += course.credit()
+        return total
+
+    def total_grade(self):
+        total = 0
+        for course in self.__course.values():
+            total += course.grade()
+        return total
+
+    def mean_grade(self, total_course, total_grade):
+        return round(total_grade / total_course, 1)
+
+    def max_grade(self):
+        max_grade = 1
+        for course in self.__course.values():
+            if course.grade() > max_grade:
+                max_grade = course.grade()
+        return max_grade
+
+    def count_grade(self, grade_level):
+        count = 0
+        for course in self.__course.values():
+            if course.grade() == grade_level:
+                count += 1
+        return count
+
+    def grade_distribut(self):
+        grades = {}
+        max_grade = self.max_grade()
+        for i in range(1, 6):
+            grades[i] = self.count_grade(i)
+        return grades
+
+
+class CourseApplication:
+    def __init__(self):
+        self.__statistics = Statistics()
+
+    def helper(self):
+        print("1 add course")
+        print("2 get course data")
+        print("3 statistics")
+        print("0 exit")
+
+    def add_course(self):
+        name = input("course: ")
+        grade = int(input("grade:"))
+        credit = int(input("credits:"))
+
+        self.__statistics.add_course(name, grade, credit)
+
+    def get_data(self):
+        name = input("course: ")
+        data = self.__statistics.get_data(name)
+        if data == None:
+            print("no entry for this course")
+        print(data)
+
+    def get_static(self):
+        total_courses = self.__statistics.total_courses()
+        total_credits = self.__statistics.total_credits()
+        total_grade = self.__statistics.total_grade()
+        mean_grade = self.__statistics.mean_grade(total_courses, total_grade)
+        max_grade = self.__statistics.max_grade()
+        grads_distrubution = self.__statistics.grade_distribut()
+        print(f"{total_courses} completed courses, a total of {total_credits} credits")
+        print(f"mean {mean_grade}")
+        print("grade distribution")
+        for i in range(5, 0, -1):
+            x = "x" * grads_distrubution[i]
+            print(f"{i}: {x}")
+
+    def execute(self):
+        self.helper()
+        while True:
+            print("")
+            command = input("command: ")
+
+            if command == "0":
+                break
+            elif command == "1":
+                self.add_course()
+            elif command == "2":
+                self.get_data()
+            elif command == "3":
+                self.get_static()
+            else:
+                self.helper()
+
+
+app = CourseApplication()
+app.execute()
