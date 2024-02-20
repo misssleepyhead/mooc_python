@@ -55,17 +55,17 @@ class OrderBook:
         if programmer not in [task.programmer for task in self.tasks]:
             raise ValueError
 
-        unfinish = len(
-            [task for task in self.tasks if task.programmer == programmer and task.finished == False])
+        unfinish = [task for task in self.tasks if task.programmer ==
+                    programmer and task.finished == False]
 
-        finish = len(
-            [task for task in self.tasks if task.programmer == programmer and task.finished == True])
+        finish = [task for task in self.tasks if task.programmer ==
+                  programmer and task.finished == True]
 
         unfinish_hrs = sum(
-            [task.workload for task in self.tasks if task.programmer == programmer and task.finished == False])
+            [task.workload for task in unfinish])
         finish_hrs = sum(
-            [task.workload for task in self.tasks if task.programmer == programmer and task.finished == True])
-        return (finish, unfinish, finish_hrs, unfinish_hrs)
+            [task.workload for task in finish])
+        return (len(finish), len(unfinish), finish_hrs, unfinish_hrs)
 
 
 if __name__ == "__main__":
