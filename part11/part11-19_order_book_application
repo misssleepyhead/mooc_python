@@ -1,0 +1,175 @@
+# Write your solution here:
+class Task:
+    task_id = 0
+
+    def __init__(self, description: str, programmer: str, workload: int, id: int = 0, finished: bool = False):
+        self.description = description
+        self.programmer = programmer
+        self.workload = workload
+        Task.task_id += 1
+        self.id = Task.task_id
+        self.finished = False
+
+    def is_finished(self):
+        return self.finished
+
+    def mark_finished(self):
+        self.finished = True
+
+    def __str__(self):
+        if self.finished == False:
+            finish = "NOT FINISHED"
+        else:
+            finish = "FINISHED"
+        return f"{self.id}: {self.description} ({self.workload} hours), programmer {self.programmer} {finish}"
+
+
+class OrderBook:
+    def __init__(self):
+        self.tasks = []
+
+    def add_order(self, description: str, programmer: str, workload: int):
+        self.tasks.append(Task(description, programmer, workload))
+
+    def all_orders(self):
+        return self.tasks
+
+    def programmers(self):
+        return list(set([task.programmer for task in self.tasks]))
+
+    def mark_finished(self, id: int):
+        if id not in [task.id for task in self.tasks]:
+            raise ValueError
+        for task in self.tasks:
+            if task.id == id:
+                task.mark_finished()
+
+    def finished_orders(self):
+        return [task for task in self.tasks if task.finished == True]
+
+    def unfinished_orders(self):
+        return [task for task in self.tasks if task.finished == False]
+
+    def status_of_programmer(self, programmer: str):
+        if programmer not in [task.programmer for task in self.tasks]:
+            raise ValueError
+
+        unfinish = [task for task in self.tasks if task.programmer ==
+                    programmer and task.finished == False]
+
+        finish = [task for task in self.tasks if task.programmer ==
+                  programmer and task.finished == True]
+
+        unfinish_hrs = sum(
+            [task.workload for task in unfinish])
+        finish_hrs = sum(
+            [task.workload for task in finish])
+        return (len(finish), len(unfinish), finish_hrs, unfinish_hrs)
+
+
+class OrderBookApplication:
+    def __init__(self):
+        self.orderbook = OrderBook()
+
+    def __errors(self):
+        print("erroneous input")
+
+    def helper(self):
+        print("commands:")
+        print("0 exit")
+        print("1 add order")
+        print("2 list finished tasks")
+        print("3 list unfinished tasks")
+        print("4 mark task as finished")
+        print("5 programmers")
+        print("6 status of programmer")
+
+    def add_order(self):
+        description = input("description: ")
+        try:
+            programmer, workload = input(
+                "programmer and workload estimate:").split(" ")
+        except:
+            self.__errors()
+            return
+        try:
+            workload = int(workload)
+        except:
+            self.__errors()
+            return
+
+        self.orderbook.add_order(description, programmer, workload)
+        print("added!")
+
+    def finished_orders(self):
+        result = self.orderbook.finished_orders()
+        if len(result) != 0:
+            for task in result:
+                print(task)
+        elif len(result) == 0:
+            print("no finished tasks")
+        # else:
+        #     print(result)
+
+    def unfinished_orders(self):
+        result = self.orderbook.unfinished_orders()
+        if len(result) != 0:
+            for task in result:
+                print(task)
+        elif len(result) == 0:
+            print("no unfinished tasks")
+
+    def mark_finished(self):
+        id = input("id: ")
+
+        try:
+            id = int(id)
+        except:
+            self.__errors()
+            return
+
+        if id not in [task.id for task in self.orderbook.all_orders()]:
+            self.__errors()
+            return
+        self.orderbook.mark_finished(id)
+        print("marked as finished")
+
+    def programmers(self):
+        result = self.orderbook.programmers()
+        for programmer in result:
+            print(programmer)
+
+    def status_of_programmer(self):
+        programmer = input("programmer: ")
+        if programmer not in self.orderbook.programmers():
+            self.__errors()
+            return
+
+        result = self.orderbook.status_of_programmer(programmer)
+        print(
+            f"tasks: finished {result[0]} not finished {result[1]}, hours: done {result[2]} scheduled {result[3]}")
+
+    def execute(self):
+        self.helper()
+        while True:
+            command = input("command: ")
+
+            if command == "0":
+                break
+            elif command == "1":
+                self.add_order()
+            elif command == "2":
+                self.finished_orders()
+            elif command == "3":
+                self.unfinished_orders()
+            elif command == "4":
+                self.mark_finished()
+            elif command == "5":
+                self.programmers()
+            elif command == "6":
+                self.status_of_programmer()
+
+
+app = OrderBookApplication()
+app.execute()
+print(app)
