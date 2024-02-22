@@ -1,0 +1,125 @@
+# Write your solution here
+import json
+
+
+def open_file(filename):
+    with open(filename) as file:
+        data = json.load(file)
+    return data
+
+
+def helper():
+    print("commands:")
+    print("0 quit")
+    print("1 search for player")
+    print("2 teams")
+    print("3 countries")
+    print("4 players in team")
+    print("5 players from country")
+    print("6 most points")
+    print("7 most goals")
+
+
+def search_player(data, name):
+
+    for player in data:
+        if player["name"] == name:
+            return player
+    return None
+
+
+def print_player(player):
+    name = player["name"]
+    # nationality = player["nationality"]
+    team = player["team"]
+    assist = player["assists"]
+    goals = player["goals"]
+    points = assist + goals
+    return f"{name:21s}{team:5s}{goals:2d} + {assist:2d} = {points:3d}"
+
+
+def teams(data):
+    return sorted(set([p["team"] for p in data]))
+
+
+def countries(data):
+    return sorted(set([p["nationality"] for p in data]))
+
+
+def team_players(data):
+    team = input("team: ")
+    return sorted([p for p in data if p["team"] == team], key=lambda p: p["goals"] + p["assists"], reverse=True)
+
+
+def national_players(data):
+    country = input("country: ")
+    return sorted([p for p in data if p["nationality"] == country], key=lambda p: p["goals"] + p["assists"], reverse=True)
+
+
+def most_points(data):
+    amount = int(input("how many:"))
+    number = 1
+    result = sorted([p for p in data],
+                    key=lambda p: p["goals"] + p["assists"], reverse=True)
+    while number <= amount:
+        yield result[number-1]
+        number += 1
+
+
+def most_goals(data):
+    amount = int(input("how many:"))
+    number = 1
+    result = sorted(data,
+                    key=lambda p: (p["goals"]-p["games"]), reverse=True)
+    result = sorted(result, key=lambda p: p["goals"], reverse=True)
+    while number <= amount:
+        yield result[number-1]
+        number += 1
+
+
+def execute():
+    file = input("file name:")
+    # file = "partial.json"
+    data = open_file(file)
+    print(f"read the data of {len(data)} players")
+    helper()
+    while True:
+        print()
+        c = input("command: ")
+        if c == "0":
+            break
+        elif c == "1":
+            name = input("name:")
+            player = search_player(data, name)
+            if player:
+                print(print_player(player))
+        elif c == "2":
+            result = teams(data)
+            for r in result:
+                print(r)
+        elif c == "3":
+            result = countries(data)
+            for r in result:
+                print(r)
+        elif c == "4":
+            result = team_players(data)
+            for p in result:
+                print(print_player(p))
+        elif c == "5":
+            result = national_players(data)
+            for p in result:
+                print(print_player(p))
+        elif c == "6":
+            result = most_points(data)
+            # print(result)
+            for p in result:
+                print(print_player(p))
+        elif c == "7":
+            result = most_goals(data)
+            for p in result:
+                print(print_player(p))
+        else:
+            helper()
+
+
+execute()
