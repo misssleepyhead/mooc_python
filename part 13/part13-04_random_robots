@@ -1,0 +1,26 @@
+# WRITE YOUR SOLUTION HERE:
+from random import randint
+import pygame
+
+pygame.init()
+window = pygame.display.set_mode((640, 480))
+w_width = 640
+w_height = 480
+robot = pygame.image.load("src/robot.png")
+width = robot.get_width()
+height = robot.get_height()
+window.fill((0, 0, 0))
+
+
+# window.blit(robot, (x, 30))
+
+for i in range(1000):
+    x = randint(0, w_width - width)
+    y = randint(0, w_height - height)
+    window.blit(robot, (x, y))
+pygame.display.flip()
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            exit()
