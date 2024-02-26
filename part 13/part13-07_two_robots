@@ -1,0 +1,35 @@
+# WRITE YOUR SOLUTION HERE:
+import pygame
+
+pygame.init()
+window = pygame.display.set_mode((640, 480))
+
+robot = pygame.image.load("src/robot.png")
+
+x1 = 0
+x2 = 0
+x1_velocity = 1
+x2_velocity = 2
+clock = pygame.time.Clock()
+width = robot.get_width()
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            exit()
+
+    window.fill((0, 0, 0))
+    window.blit(robot, (x1, 50))
+    window.blit(robot, (x2, 100+width))
+    pygame.display.flip()
+
+    x1 += x1_velocity
+    x2 += x2_velocity
+    if x1_velocity > 0 and x1 + width >= 640:
+        x1_velocity = -x1_velocity
+    if x1_velocity < 0 and x1 <= 0:
+        x1_velocity = -x1_velocity
+    if x2_velocity > 0 and x2 + width >= 640:
+        x2_velocity = -x2_velocity
+    if x2_velocity < 0 and x2 <= 0:
+        x2_velocity = -x2_velocity
+    clock.tick(60)
