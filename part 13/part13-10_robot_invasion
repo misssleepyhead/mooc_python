@@ -19,7 +19,7 @@ number = 20
 # create 20 diffrents x position of robot
 robots = []
 for i in range(number):
-    x = randint(0, w_width-width)
+    x = -100
     y = height
     direction = choice(["left", "right"])
     robots.append((x, y, direction))
