@@ -1,0 +1,50 @@
+# WRITE YOUR SOLUTION HERE:
+import pygame
+from datetime import datetime
+import math
+
+pygame.init()
+display = pygame.display.set_mode((640, 480))
+
+clock = pygame.time.Clock()
+
+middle_x = 320
+middle_y = 240
+
+
+def lines(proportion: int, length: int, thickness: int):
+    angle = 2*math.pi*proportion-math.pi/2
+    line_x = middle_x + math.cos(angle)*length
+    line_y = middle_y + math.sin(angle)*length
+    pygame.draw.line(display, (0, 0, 255), (middle_x,
+                     middle_y), (line_x, line_y), thickness)
+
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            exit()
+
+    display.fill((0, 0, 0))
+    # timedata
+    hour = datetime.now().hour
+    minute = datetime.now().minute
+    second = datetime.now().second
+    pygame.display.set_caption(f"{hour}:{minute}:{second:02d}")
+
+    pygame.draw.circle(display, "red", (middle_x, middle_y),
+                       200, 5)  # clock outline
+    pygame.draw.circle(display, "red", (middle_x, middle_y),
+                       10)  # clock centre
+
+    second_proportion = second/60
+    lines(second_proportion, 190, 2)
+
+    minute_proportion = minute/60
+    lines(minute_proportion, 175, 3)
+
+    hour_proportion = (hour+minute/60+second/3600)/12
+    lines(hour_proportion, 150, 5)
+
+    pygame.display.flip()
+    clock.tick(60)
