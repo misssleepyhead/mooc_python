@@ -1,0 +1,89 @@
+# WRITE YOUR SOLUTION HERE:
+from random import randint
+import pygame
+
+
+pygame.init()
+w_width = 640
+w_height = 480
+window = pygame.display.set_mode((w_width, w_height))
+pygame.display.set_caption("Asteroids")
+
+
+robot = pygame.image.load("src/robot.png")
+rock = pygame.image.load("src/rock.png")
+w1 = robot.get_width()
+h1 = robot.get_height()
+w2 = rock.get_width()
+h2 = rock.get_height()
+
+to_right = False
+to_left = False
+
+x1 = 0
+y1 = w_height-h1
+clock = pygame.time.Clock()
+
+
+# create random rocks
+number = 10
+rocks = []
+for i in range(number):
+    x2 = randint(0, w_width-w2)
+    y2 = -randint(100, 1000)
+    rocks.append([x2, y2])
+
+# score count
+counts = 0
+
+
+while True:
+
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                to_left = True
+            if event.key == pygame.K_RIGHT:
+                to_right = True
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                to_left = False
+            if event.key == pygame.K_RIGHT:
+                to_right = False
+
+        if event.type == pygame.QUIT:
+            exit()
+
+    # robot
+    if to_right and x1 + w1 <= 640:
+        x1 += 2
+    if to_left and x1 > 0:
+        x1 -= 2
+
+    # rocks
+    for i in range(number):
+        rocks[i][1] += 1
+        # if the rock falls on the ground, game over
+        if rocks[i][1]+h2 >= w_height:
+            counts = 0
+            exit()
+
+        # if the robot catchs a rock
+        if rocks[i][1] + h2 >= y1 and rocks[i][0] + w2 >= x1:
+            rocks[i][0] = randint(0, w_width-w2)
+            rocks[i][1] = -randint(100, 1000)
+            counts += 1
+
+    window.fill((0, 0, 0))
+    window.blit(robot, (x1, w_height-h1))
+    for i in range(number):
+        window.blit(rock, (rocks[i][0], rocks[i][1]))
+
+    # score
+    game_font = pygame.font.SysFont("Arial", 24)
+    text = game_font.render(f"Points:{counts}", True, (255, 0, 0))
+    window.blit(text, (500, 10))
+
+    pygame.display.flip()
+    clock.tick(60)
