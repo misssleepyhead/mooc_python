@@ -1,0 +1,107 @@
+# Complete your game here
+from random import randint
+import pygame
+
+# design a game that the coin rains randomly, and the robot have to catch it before time end
+# also avoid touched by the monster
+size = width, height = 680, 480
+BLACK = (0, 0, 0)
+to_right = False
+to_left = False
+to_up = False
+to_down = False
+
+
+class Game:
+
+    def __init__(self):
+        pygame.init()
+        self.window = pygame.display.set_mode(size)
+        self.load_images()
+        self.robot = Robot(self.window)
+        self.monster = Monster(self.window)
+        pygame.display.set_caption("Robot collects coins")
+        self.main_loop()
+        self.clock = pygame.time.Clock()
+
+    def load_images(self):
+        self.images = []
+        for name in ["coin", "monster", "door", "robot"]:
+            self.images.append(pygame.image.load("src/" + name + ".png"))
+
+    def main_loop(self):
+        while True:
+            self.check_events()
+            self.draw_window()
+
+    def check_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    to_left = True
+                if event.key == pygame.K_RIGHT:
+                    to_right = True
+                # if event.key == pygame.K_UP:
+                #     to_up = True
+                # if event.key == pygame.K_DOWN:
+                #     to_down = True
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT:
+                    to_left = False
+                if event.key == pygame.K_RIGHT:
+                    to_right = False
+                # if event.key == pygame.K_UP:
+                #     to_up = False
+                # if event.key == pygame.K_DOWN:
+                #     to_down = False
+
+            if event.type == pygame.QUIT:
+                exit()
+
+    def draw_window(self):
+        self.window.fill(BLACK)
+        coin = pygame.image.load("src/coin.png")
+        self.robot.draw()
+        self.monster.draw()
+        self.monster.falling()
+        self.window.blit(coin, (320, 30))
+        pygame.display.flip()
+
+
+class Robot:
+    def __init__(self, window):
+        self.robot = pygame.image.load("src/robot.png")
+        self.window = window
+        robot_width = self.robot.get_width()
+        robot_height = self.robot.get_height()
+        self.location = (320, height-robot_height)
+
+    def draw(self):
+        self.window.blit(self.robot, self.location)
+
+
+class Monster:
+    def __init__(self, window):
+        self.monster = pygame.image.load("src/monster.png")
+        self.window = window
+        self.monster_width = self.monster.get_width()
+        self.monster_height = self.monster.get_height()
+        random_start = self.get_location(self.monster_width)
+        self.location = [random_start[0], random_start[1]]
+
+    def get_location(self, monster_width):
+        x = randint(0, 640-monster_width)
+        y = randint(-1000, -100)
+        print(x, y)
+        return (x, y)
+
+    def falling(self):
+        self.location[1] += 0.1
+
+    def draw(self):
+        self.window.blit(self.monster, self.location)
+
+
+if __name__ == "__main__":
+    game = Game()
